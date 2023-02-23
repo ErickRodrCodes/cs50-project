@@ -22,7 +22,8 @@
         ],
         "styles": ["apps/movie-reviewer/src/styles.scss"],
         "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "webpackConfig": "@nrwl/react/plugins/webpack",
+        "postcssConfig": "apps/movie-reviewer/postcss.config.js"
       },
       "configurations": {
         "development": {
