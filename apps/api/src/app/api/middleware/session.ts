@@ -9,6 +9,11 @@ export class SQLLiteStore extends session.Store {
   constructor(options){
     super(options);
     this.db = new sqlite3.Database(options.db);
+    this.db.run('CREATE TABLE IF NOT EXISTS session_store (sid varchar primary key, data text, expires integer)', (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
   }
 
   get(sid, callback){

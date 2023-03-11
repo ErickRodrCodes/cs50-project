@@ -7,6 +7,7 @@
     "build": {
       "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "target": "node",
         "compiler": "tsc",
@@ -16,6 +17,12 @@
         "assets": ["apps/api/src/assets"]
       },
       "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
         "production": {
           "optimization": true,
           "extractLicenses": true,
@@ -31,12 +38,16 @@
     },
     "serve": {
       "executor": "@nrwl/js:node",
+      "defaultConfiguration": "development",
       "options": {
         "buildTarget": "api:build"
       },
       "configurations": {
         "production": {
           "buildTarget": "api:build:production"
+        },
+        "development": {
+          "buildTarget": "api:build:development"
         }
       }
     },
