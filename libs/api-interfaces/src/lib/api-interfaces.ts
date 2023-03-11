@@ -5,7 +5,7 @@ export interface Message {
 export interface IMovie {
 	adult: boolean;
 	backdrop_path: string;
-	genre_ids: number[];
+	genre_ids: string;
 	id: number;
 	original_language: string;
 	original_title: string;

@@ -13,7 +13,7 @@ export class UserMiddleware {
   }
 
   static async createNewUser(username, user_hash) {
-    return await Database.execute('INSERT INTO users (username, user_hash) VALUES (?, ?)', [username, user_hash]);
+    return await Database.execute('INSERT INTO users (username, passowrd_hash) VALUES (?, ?)', [username, user_hash]);
   }
 
   static async getUserByUsername(username) {

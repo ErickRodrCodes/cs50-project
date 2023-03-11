@@ -22,8 +22,9 @@
         ],
         "styles": ["apps/movie-reviewer/src/styles.scss"],
         "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack",
-        "postcssConfig": "apps/movie-reviewer/postcss.config.js"
+        "webpackConfig": "apps/movie-reviewer/webpack.config.js",
+        "postcssConfig": "apps/movie-reviewer/postcss.config.js",
+        "isolatedConfig": true
       },
       "configurations": {
         "development": {
@@ -75,7 +76,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/movie-reviewer"],
+      "outputs": ["{workspaceRoot}/coverage/apps/movie-reviewer"],
       "options": {
         "jestConfig": "apps/movie-reviewer/jest.config.ts",
         "passWithNoTests": true

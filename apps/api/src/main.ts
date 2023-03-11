@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
-  secret: 'secret',
+  secret: process.env.EXPRESS_SESSION_SECRE,
   store: new SQLLiteStore({
     db: path.join(__dirname, '..','..','..','db','session_store.db'),
     concurrentDB: 'true',
