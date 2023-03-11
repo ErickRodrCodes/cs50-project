@@ -4,7 +4,7 @@ import * as session from 'express-session';
 import * as dotenv from 'dotenv';
 
 
-import cookieParser from 'cookie-parser';
+import * as cookieParser from 'cookie-parser';
 import { Message } from '@project14-8-6/api-interfaces';
 
 import indexRouter from './app/api/index';
