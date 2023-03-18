@@ -39,7 +39,10 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "api:build"
+        "buildTarget": "api:build",
+        "inspect": "inspect",
+        "port": 4343,
+        "watch": true
       },
       "configurations": {
         "production": {

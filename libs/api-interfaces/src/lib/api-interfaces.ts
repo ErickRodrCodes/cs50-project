@@ -5,7 +5,7 @@ export interface Message {
 export interface IMovie {
 	adult: boolean;
 	backdrop_path: string;
-	genre_ids: string;
+	genre_ids: any[];
 	id: number;
 	original_language: string;
 	original_title: string;
@@ -28,3 +28,19 @@ export interface IPopularMovies {
   total_results: number;
 }
 
+export interface IReview {
+  id_review: number;
+  id_movie: number;
+  id_user: number;
+  review: string;
+  rating: number;
+};
+
+export type Reviews = IReview[];
+
+export interface IUsers {
+  id_user?: number;
+  username: string;
+  email: string;
+  password_hash: string;
+}

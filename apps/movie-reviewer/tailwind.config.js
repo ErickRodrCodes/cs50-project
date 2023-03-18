@@ -1,4 +1,3 @@
-// const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
 const { join } = require('path');
 
 module.exports = {
@@ -14,5 +13,6 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
+    require("daisyui")
   ],
 };

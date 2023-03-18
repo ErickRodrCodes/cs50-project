@@ -6,7 +6,7 @@ const db =  new sqlite3.Database(
 )
 
 export class Database {
-  static query = (sql, params = []): Promise<any> => {
+  static query = (sql, params = []): Promise<any[]> => {
     return new Promise((resolve, reject) => {
       db.all(sql, params, (err, rows) => {
         if (err) {
@@ -25,13 +25,20 @@ export class Database {
         if(err){
           reject(err);
         }
-        resolve({id: this.lastID});
+        resolve({id: this?.lastID});
       });
     });
   }
 }
 
-export function createMovieTable(): Promise<any> {
+export async function  listTables(): Promise<any> {
+  const tables = await Database.query(
+    `SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;`
+  );
+  return tables;
+}
+
+export async function createMovieTable(): Promise<any> {
   return Database.execute(
     `CREATE TABLE IF NOT EXISTS movies (
       id_movie INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -53,7 +60,7 @@ export function createMovieTable(): Promise<any> {
   );
 }
 
-export function createUserTable(): Promise<any> {
+export async function createUserTable(): Promise<any> {
   return Database.execute(
     `CREATE TABLE IF NOT EXISTS users (
       id_user INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -64,28 +71,44 @@ export function createUserTable(): Promise<any> {
   );
 }
 
-export function createReviewTable(): Promise<any> {
-  return Database.execute(
-    `CREATE TABLE IF NOT EXISTS reviews (
-      id_review INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      id_movie INTEGER NOT NULL,
-      id_user INTEGER NOT NULL,
-      review TEXT,
-      rating INTEGER,
-      FOREIGN KEY(id_movie) REFERENCES movies(id_movie),
-      FOREIGN KEY(id_user) REFERENCES users(id_user)
-    );`
-  );
+export async function createReviewTable(): Promise<any> {
+  try {
+    return await Database.execute(
+      `CREATE TABLE IF NOT EXISTS reviews (
+        id_review INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        id_movie INTEGER NOT NULL,
+        id_user INTEGER NOT NULL,
+        review TEXT,
+        rating INTEGER,
+        FOREIGN KEY(id_movie) REFERENCES movies(id_movie),
+        FOREIGN KEY(id_user) REFERENCES users(id_user)
+      );`
+    );
+  } catch (e) {
+    console.log({e})
+  }
+
 }
 
 export function createTables(): Promise<any> {
   return Promise.all([createMovieTable(), createUserTable(), createReviewTable()]);
 }
 
-export function dropTables(): Promise<any> {
-  return Promise.all([
-    Database.execute('DROP TABLE IF EXISTS reviews'),
-    Database.execute('DROP TABLE IF EXISTS users'),
-    Database.execute('DROP TABLE IF EXISTS movies')
-  ]);
+export async function resetDatabase () {
+  // check if tables exist, if not create them
+  const tables: {name:string}[] = await listTables()
+  console.log('Removing any previous tables...')
+  const listofPromises = tables.map((table) => {
+    if(table.name === 'sqlite_sequence') return Promise.resolve({});
+    const sql = `DROP TABLE ${table.name}`;
+    return Database.execute(sql);
+  })
+  await Promise.all(listofPromises);
+  console.log('Initializing new tables...')
+  await createTables();
+  console.log('Creating an initial set of movies...');
+
+  console.log('initialization complete.')
 }
+
+
