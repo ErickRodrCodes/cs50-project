@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Message } from '@project14-8-6/api-interfaces';
+import MovieList from './components/MovieList';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import AppContainer from './components/AppContainer';
 
 export const App = () => {
-  const [m, setMessage] = useState<Message>({ message: '' });
-
-  useEffect(() => {
-    fetch('/api/v1')
-      .then((r) => r.json())
-      .then(setMessage);
-  }, []);
-
-
+  const router = createBrowserRouter([
+    { path: '/', element: <MovieList />}
+  ])
 
   return (
-    <div>hello {m.message}</div>
+    <AppContainer>
+      <div>Navigation goes here</div>
+      <div className="flex flex-col items-center gap-20 py-20">
+        <RouterProvider router={router}></RouterProvider>
+      </div>
+    </AppContainer>
   );
 };
 
