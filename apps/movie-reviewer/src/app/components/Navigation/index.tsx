@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../AppContext';
 
 export function Navigation() {
-  const { isLoggedIn, userId } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   return (
     <div className="navbar bg-base-100 bg-primary rounded-box mt-3">
