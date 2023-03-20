@@ -1,20 +1,16 @@
-import MovieList from './components/MovieList';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import AppContainer from './components/AppContainer';
+import { IndexPage } from './Pages/Index';
+import { LoginPage } from './Pages/Login';
+import { RegistrationPage } from './Pages/Registration';
 
 export const App = () => {
   const router = createBrowserRouter([
-    { path: '/', element: <MovieList />}
-  ])
+    { path: '/', element: <IndexPage /> },
+    { path: '/login', element: <LoginPage /> },
+    { path: '/registration', element: <RegistrationPage /> },
+  ]);
 
-  return (
-    <AppContainer>
-      <div>Navigation goes here</div>
-      <div className="flex flex-col items-center gap-20 py-20">
-        <RouterProvider router={router}></RouterProvider>
-      </div>
-    </AppContainer>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;

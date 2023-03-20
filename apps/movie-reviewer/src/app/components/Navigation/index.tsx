@@ -1,54 +1,64 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import styles from './index.module.scss';
 
-/* eslint-disable-next-line */
-export interface NavigationProps {}
+import { Link } from 'react-router-dom';
+import { useAuth } from '../AppContext';
 
-export function Navigation(props: NavigationProps) {
+export function Navigation() {
+  const { isLoggedIn, userId } = useAuth();
+
   return (
-    <div className="navbar bg-base-100">
-  <div className="navbar-start">
-    <div className="dropdown">
-      <label tabIndex={0} className="btn btn-ghost lg:hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-      </label>
-      <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a>Item 1</a></li>
-        <li tabIndex={0}>
-          <a className="justify-between">
-            Parent
-            <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/></svg>
-          </a>
-          <ul className="p-2">
-            <li><a>Submenu 1</a></li>
-            <li><a>Submenu 2</a></li>
-          </ul>
-        </li>
-        <li><a>Item 3</a></li>
-      </ul>
+    <div className="navbar bg-base-100 bg-primary rounded-box mt-3">
+      <div className="flex-1 gap-2">
+        <Link to="/" className="btn btn-ghost normal-case text-xl">
+          Movie Reviewer
+        </Link>
+      </div>
+
+      <div className="flex-none flex gap-2">
+        {isLoggedIn ? (
+          <div className="dropdown dropdown-end">
+            <label
+              tabIndex={0}
+              className="btn btn-ghost btn-active btn-circle avatar flex"
+            >
+              <div
+                className="w-10 rounded-full bg-base-100  justify-items-center content-center"
+                style={{ display: 'flex' }}
+              >
+                <div className="m-auto">JR</div>
+              </div>
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-primary rounded-box w-52"
+            >
+              <li>
+                <a className="justify-between">
+                  Profile
+                  <span className="badge">New</span>
+                </a>
+              </li>
+              <li>
+                <a>Settings</a>
+              </li>
+              <li>
+                <a>Logout</a>
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <>
+            <Link to={'/registration'} tabIndex={1} className="btn btn-sm">
+              Register
+            </Link>
+
+            <Link to={'/login'} className="btn btn-sm" tabIndex={2}>
+              Login
+            </Link>
+          </>
+        )}
+      </div>
     </div>
-    <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
-  </div>
-  <div className="navbar-center hidden lg:flex">
-    <ul className="menu menu-horizontal px-1">
-      <li><a>Item 1</a></li>
-      <li tabIndex={0}>
-        <a>
-          Parent
-          <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
-        </a>
-        <ul className="p-2">
-          <li><a>Submenu 1</a></li>
-          <li><a>Submenu 2</a></li>
-        </ul>
-      </li>
-      <li><a>Item 3</a></li>
-    </ul>
-  </div>
-  <div className="navbar-end">
-    <a className="btn">Get started</a>
-  </div>
-</div>
   );
 }
 

@@ -67,7 +67,11 @@ userRouter.post('/login', async (req, res) => {
 
   // Create a JWT token
   const accessToken = jwt.sign(
-    { userId: existingUser[0].id_user },
+    {
+      userId: existingUser[0].id_user,
+      username: existingUser[0].username,
+      email: existingUser[0].email,
+    },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: '1h' }
   );
@@ -78,10 +82,8 @@ userRouter.post('/login', async (req, res) => {
     secure: req.secure && req.hostname !== 'localhost',
   });
 
-  // Return the user object
-  return res
-    .status(200)
-    .json({ username: existingUser[0].username, email: existingUser[0].email });
+  // Redirect the user to the home page
+  return res.redirect('/');
 });
 
 userRouter.get('/logout', (req, res) => {

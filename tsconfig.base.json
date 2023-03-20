@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@project/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@project/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@project/movie-reviewer": ["apps/movie-reviewer/src"]
     }
   },
   "exclude": ["node_modules", "tmp"]
