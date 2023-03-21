@@ -4,9 +4,7 @@ export interface AppContainerProps {
 
 export function AppContainer(props: AppContainerProps) {
   return (
-    <div className="md:container md:mx-auto md:px-4">
-      {props.children}
-    </div>
+    <div className="md:container md:mx-auto md:px-6">{props.children}</div>
   );
 }
 

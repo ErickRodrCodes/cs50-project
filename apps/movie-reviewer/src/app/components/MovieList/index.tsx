@@ -21,7 +21,7 @@ export function MovieList() {
     <div>
       <ul className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
         {loading
-          ? Array.from({ length: 5 }).map((_, i) => <MovieItemLoadingUI />)
+          ? Array.from({ length: 6 }).map((_, i) => <MovieItemLoadingUI />)
           : movies.map((movie) => <MovieItem {...movie} key={movie.id} />)}
       </ul>
     </div>
