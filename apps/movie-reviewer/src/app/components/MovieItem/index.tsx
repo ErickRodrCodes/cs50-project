@@ -18,9 +18,8 @@ export function MovieItem(props: IMovie) {
       </div>
 
       <div className="card-body pt-4 items-center text-center">
-        <p>
-          <MovieRate movie={props} />
-        </p>
+        <MovieRate movie={props} />
+
         <p>Release Date: {props.release_date}</p>
         <div className="card-actions">
           <Link to={`/movie/${props.id}`} className="btn btn-primary">

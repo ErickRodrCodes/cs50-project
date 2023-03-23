@@ -1,15 +1,19 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
+import { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { RouteConstants } from '../../constants';
 import { useAuth } from '../AppContext';
 
-export function Navigation() {
+export function Navigation(props: any) {
   const { isLoggedIn } = useAuth();
-
   return (
     <div className="navbar bg-base-100 bg-primary rounded-box mt-3">
       <div className="flex-1 gap-2">
-        <Link to="/" className="btn btn-ghost normal-case text-xl">
+        <Link
+          to={RouteConstants.ROOT}
+          className="btn btn-ghost normal-case text-xl"
+        >
           Movie Reviewer
         </Link>
       </div>
@@ -48,11 +52,15 @@ export function Navigation() {
           </div>
         ) : (
           <>
-            <Link to={'/registration'} tabIndex={1} className="btn btn-sm">
+            <Link
+              to={RouteConstants.REGISTER}
+              tabIndex={1}
+              className="btn btn-sm"
+            >
               Register
             </Link>
 
-            <Link to={'/login'} className="btn btn-sm" tabIndex={2}>
+            <Link to={RouteConstants.LOGIN} className="btn btn-sm" tabIndex={2}>
               Login
             </Link>
           </>

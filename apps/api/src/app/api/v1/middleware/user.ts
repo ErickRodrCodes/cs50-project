@@ -15,7 +15,7 @@ export class UserMiddleware {
   static async createNewUser(params: IUsers) {
     const { username, email, password_hash } = params;
     const ret = await Database.execute(
-      'INSERT INTO users (username, email, passowrd_hash) VALUES (?, ?, ?)',
+      'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)',
       [username, email, password_hash]
     );
     console.log({ ret });

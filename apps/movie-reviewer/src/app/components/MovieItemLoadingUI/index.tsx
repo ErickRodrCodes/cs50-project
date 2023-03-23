@@ -8,12 +8,8 @@ export function MovieItemLoadingUI() {
       </div>
 
       <div className="card-body items-center text-center">
-        <p>
-          <div className="animate-pulse w-[220px] h-[30px] animate-pulse bg-gray-300"></div>
-        </p>
-        <p>
-          <div className="animate-pulse w-[220px] h-[30px] animate-pulse bg-gray-300"></div>
-        </p>
+        <p className="animate-pulse w-[220px] h-[30px] animate-pulse bg-gray-300"></p>
+        <p className="animate-pulse w-[220px] h-[30px] animate-pulse bg-gray-300"></p>
         <div className="card-actions">
           <button className="btn animate-pulse bg-gray-300 w-[100px]" />
         </div>

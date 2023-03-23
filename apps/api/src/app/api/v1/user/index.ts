@@ -21,7 +21,8 @@ userRouter.post('/register', async (req: Request, res: Response) => {
 
     // Check if the user already exists
     const existingUser = await UserMiddleware.getUserByEmail(email);
-    if (existingUser) {
+    console.log({ existingUser });
+    if (existingUser.length) {
       return res
         .status(409)
         .json({ message: 'User with this email already exists' });
@@ -38,12 +39,14 @@ userRouter.post('/register', async (req: Request, res: Response) => {
     };
 
     // create a new user
-    await UserMiddleware.createNewUser(newUser);
+    const createNewUser = await UserMiddleware.createNewUser(newUser);
+    console.log({ createNewUser });
 
     // return the newly created user
     return res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
-    return res.status(422).json({ errors: error.errors });
+    console.log({ error });
+    return res.status(500).json({ errors: 'Unexpected server error occured.' });
   }
 });
 
@@ -78,12 +81,13 @@ userRouter.post('/login', async (req, res) => {
 
   // Set the JWT token as a cookie
   res.cookie('accessToken', accessToken, {
-    httpOnly: true,
-    secure: req.secure && req.hostname !== 'localhost',
+    httpOnly: false,
+    secure: false,
+    path: '/',
   });
 
   // Redirect the user to the home page
-  return res.redirect('/');
+  return res.status(200).json({ message: 'User logged in successfully' });
 });
 
 userRouter.get('/logout', (req, res) => {

@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react';
+import { APIRouteConstants, RouteConstants } from '../../constants';
 import styles from './index.module.scss';
 
 /* eslint-disable-next-line */
@@ -12,8 +13,9 @@ export function Login(props: LoginProps) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     try {
-      const response = await fetch('/api/v1/user/login', {
+      const response = await fetch(APIRouteConstants.USER_LOGIN, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -22,14 +24,15 @@ export function Login(props: LoginProps) {
           password: data.get('password'),
         }),
       });
-
       if (!response.ok) {
         const json = await response.json();
         setLoginError(true);
         setLoginErrorMessage(json.message);
+      } else {
+        document.location.href = RouteConstants.ROOT;
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any & { status: number; text: () => Promise<string> }) {
+    } catch (error: any) {
       if (error.response.status === !200) {
         setLoginError(true);
         setLoginErrorMessage(error.response.data.message);
