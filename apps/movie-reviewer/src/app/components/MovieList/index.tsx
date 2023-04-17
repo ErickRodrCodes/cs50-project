@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { APIRouteConstants } from '../../constants';
 import { MovieItem } from '../MovieItem';
 import { MovieItemLoadingUI } from '../MovieItemLoadingUI';
+import http from '../../common/http';
 
 export function MovieList() {
   const [movies, setMovies] = useState<IMovie[]>([]);
@@ -10,9 +11,8 @@ export function MovieList() {
 
   useEffect(() => {
     async function getMovies() {
-      const response = await fetch(APIRouteConstants.MOVIE_LIST);
-      const json: IMovieListResponse = await response.json();
-      setMovies(json.data);
+      const response = await http.get(APIRouteConstants.MOVIE_LIST);
+      setMovies(response.data);
       setLoading(false);
     }
     getMovies();

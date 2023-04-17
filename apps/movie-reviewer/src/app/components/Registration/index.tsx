@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { APIRouteConstants, RouteConstants } from '../../constants';
 import {} from 'react-router-dom';
+import http from '../../common/http';
+import { Message } from '@project/api-interfaces';
 
 /* eslint-disable-next-line */
 export interface RegistrationProps {}
@@ -21,25 +23,27 @@ export function Registration(props: RegistrationProps) {
       return;
     }
     try {
-      const response = await fetch(APIRouteConstants.USER_REGISTRATION, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: data.get('username'),
-          email: data.get('email'),
-          password: data.get('password'),
-        }),
-      });
+      const response = await http<Message>(
+        APIRouteConstants.USER_REGISTRATION,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          data: {
+            username: data.get('username'),
+            email: data.get('email'),
+            password: data.get('password'),
+          },
+        }
+      );
 
       console.log({ response });
 
-      if (!response.ok) {
-        console.log({ response });
+      if (response.status !== 200) {
         setRegistrationError(true);
-        const json = await response.json();
-        setRegistrationErrorMessage(json.message);
+
+        setRegistrationErrorMessage(response.data.message);
         return;
       }
 

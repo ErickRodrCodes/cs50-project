@@ -5,19 +5,44 @@ interface TokenPayload {
   userId: number;
 }
 
-export function authenticateToken(req: Request, res: Response, next: NextFunction) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (token == null) {
-    return res.redirect(`/login?redirect=${encodeURIComponent(req.originalUrl)}`);
+interface DecodedToken {
+  // Define the properties of the decoded JWT token
+  // For example:
+  userId: number;
+  iat: number;
+  exp: number;
+}
+
+export function authenticateToken(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const authHeader: string | undefined = req.headers.authorization;
+  const token: string | undefined = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    // No token found, send 401 Unauthorized response
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload: TokenPayload) => {
-    if (err) {
-      return res.redirect(`/login?redirect=${encodeURIComponent(req.originalUrl)}`);
+  jwt.verify(
+    token,
+    process.env.ACCESS_TOKEN_SECRET,
+    (err, decoded: DecodedToken | undefined) => {
+      if (err || !decoded) {
+        // Invalid token, send 401 Unauthorized response
+        return res.status(401).json({ message: 'Unauthorized' });
+      } else {
+        const currentTime: number = Math.floor(Date.now() / 1000);
+        if (decoded.exp < currentTime) {
+          // Token has expired, send 401 Unauthorized response
+          return res.status(401).json({ message: 'Unauthorized' });
+        } else {
+          // Token is valid and not expired, add decoded token to request object and proceed to next middleware
+          next();
+        }
+      }
     }
-    req.body.userId = payload.userId;
-    req.body.redirect = req.query.redirect;
-    next();
-  });
+  );
 }

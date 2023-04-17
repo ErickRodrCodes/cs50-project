@@ -10,6 +10,8 @@ import AppContainer from '../AppContainer';
 import Navigation from '../Navigation';
 import Cookies from 'js-cookie';
 import { Buffer } from 'buffer';
+import http from '../../common/http';
+import { Message } from '@project/api-interfaces';
 
 interface AuthContextProps {
   isLoggedIn: boolean;
@@ -53,19 +55,18 @@ export const AuthProvider = (props: IAuthProvider) => {
 
   const register = useCallback(
     async (credentials: { name: string; email: string; password: string }) => {
-      const response = await fetch('/api/v1/user/register', {
+      const response = await http<Message>('/api/v1/user/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(credentials),
+        data: credentials,
       });
 
       if (response.status === 201) {
         return Promise.resolve();
       } else {
-        const data = await response.json();
-        const error = new Error(data.message);
+        const error = new Error(response.data.message);
         return Promise.reject(error);
       }
     },
@@ -74,17 +75,16 @@ export const AuthProvider = (props: IAuthProvider) => {
 
   const login = useCallback(
     async (credentials: { email: string; password: string }) => {
-      const response = await fetch('/api/v1/user/login', {
+      const response = await http<Message>('/api/v1/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(credentials),
+        data: credentials,
       });
 
       if (response.status !== 200) {
-        const data = await response.json();
-        return Promise.reject(data.message);
+        return Promise.reject(response.data.message);
       }
       return Promise.resolve();
     },

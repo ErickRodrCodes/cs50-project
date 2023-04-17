@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react';
+import { Message } from '@project/api-interfaces';
+
+import http from '../../common/http';
 import { APIRouteConstants, RouteConstants } from '../../constants';
-import styles from './index.module.scss';
 
 /* eslint-disable-next-line */
 export interface LoginProps {}
@@ -13,21 +15,20 @@ export function Login(props: LoginProps) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     try {
-      const response = await fetch(APIRouteConstants.USER_LOGIN, {
+      const response = await http<Message>(APIRouteConstants.USER_LOGIN, {
         method: 'POST',
-        credentials: 'include',
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
+        data: {
           email: data.get('email'),
           password: data.get('password'),
-        }),
+        },
       });
-      if (!response.ok) {
-        const json = await response.json();
+      if (response.status !== 200) {
         setLoginError(true);
-        setLoginErrorMessage(json.message);
+        setLoginErrorMessage(response.data.message);
       } else {
         document.location.href = RouteConstants.ROOT;
       }

@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import { UserMiddleware } from '../middleware/user';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { IUsers } from '@project/api-interfaces';
+import { IUsers, SessionDateExpires } from '@project/api-interfaces';
 import jwt from 'jsonwebtoken';
 
 const userRouter = Router();
@@ -102,6 +102,30 @@ userRouter.get('/list', (req, res) => {
   const users = UserMiddleware.getAllUsers();
   console.log({ users });
   return res.status(200).send({ message: 'List of users' });
+});
+
+userRouter.post('/refreshToken', (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token == null) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload: any) => {
+    if (err) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    } else {
+      const newToken = jwt.sign(
+        {
+          ...payload,
+          exp: SessionDateExpires(),
+        },
+        process.env.ACCESS_TOKEN_SECRET
+      );
+      res.json({ token: newToken });
+    }
+  });
 });
 
 export default userRouter;
