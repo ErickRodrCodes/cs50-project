@@ -3,7 +3,19 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/movie-reviewer/src",
   "projectType": "application",
+
   "targets": {
+    "withTailwinds": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "npx nx watch --projects=movie-reviewer -- npx tailwindcss -i ./apps/movie-reviewer/src/styles.scss -o ./apps/movie-reviewer/src/tailwind.css",
+          "npx nx serve movie-reviewer --inspect",
+          "npx nx serve api --inspect"
+        ],
+        "parallel": true
+      }
+    },
     "build": {
       "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
@@ -26,6 +38,7 @@
         "postcssConfig": "apps/movie-reviewer/postcss.config.js",
         "isolatedConfig": true
       },
+
       "configurations": {
         "development": {
           "extractLicenses": false,

@@ -62,8 +62,8 @@ export const MovieDetails = () => {
           alt={`Poster for ${movie!.title}`}
         />
       </div>
-      <div className="relative top-0 left-0 right-0 bottom-0 z-1 flex gap-2 p-4 m-4">
-        <div>
+      <div className="relative top-0 left-0 right-0 bottom-0 z-1 flex gap-2 p-4 m-4 ">
+        <div className="w-40">
           <img
             className="w-full"
             src={Helper.getPoster(movie!.poster_path)}
