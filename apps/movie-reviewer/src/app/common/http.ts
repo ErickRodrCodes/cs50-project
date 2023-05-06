@@ -1,20 +1,26 @@
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosError, AxiosResponse } from 'axios';
 import { RouteConstants } from '../constants';
+import Cookies from 'js-cookie';
 
-const http = axios.create({});
+function http(): AxiosInstance {
+  const api: AxiosInstance = axios.create({
+    withCredentials: true,
+  });
 
-/**
- * we need to intercept every call and check if the response is 401, which means the user is not authenticated
- * or the token has expired. If that's the case, we redirect the user to the login page.
- */
-http.interceptors.request.use(
-  (response) => response,
-  (error) => {
-    if (error.response.status === 401) {
-      window.location.href = RouteConstants.LOGIN;
+  api.interceptors.response.use(
+    (response: AxiosResponse) => response,
+    (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        // remove all cookies
+        Cookies.remove('accessToken');
+        // Unauthorized, redirect the user to the login page
+        window.location.href = RouteConstants.LOGIN;
+      }
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
-  }
-);
+  );
 
-export default http;
+  return api;
+}
+
+export default http();

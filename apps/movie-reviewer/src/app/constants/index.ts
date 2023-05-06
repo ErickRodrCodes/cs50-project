@@ -16,11 +16,11 @@ export class APIRouteConstants {
   static readonly MOVIE_LIST = `${ApiVersion}/movie/list`;
   static readonly MOVIE_DETAILS = `${ApiVersion}/movie/:id`;
   static readonly MOVIE_REVIEWS = `${ApiVersion}/movie/:id/reviews`;
-  static MOVIE_ID(id: number) {
+  static MOVIE_ID(id: string) {
     return `${ApiVersion}/movie/${id}`;
   }
 
-  static MOVIE_ID_REVIEWS(id: number) {
+  static MOVIE_ID_REVIEWS(id: string) {
     return `${ApiVersion}/movie/${id}/reviews`;
   }
 }

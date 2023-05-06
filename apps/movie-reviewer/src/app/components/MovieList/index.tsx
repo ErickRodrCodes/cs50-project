@@ -12,7 +12,7 @@ export function MovieList() {
   useEffect(() => {
     async function getMovies() {
       const response = await http.get(APIRouteConstants.MOVIE_LIST);
-      setMovies(response.data);
+      setMovies(response.data.data);
       setLoading(false);
     }
     getMovies();
